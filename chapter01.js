@@ -31,16 +31,11 @@ function statement(invoice, plays) {
     }).format;
 
     for(let perf of invoice.performances) {
-        let thisAmount = amountFor(perf);
-
-        //포인트를 적립한다.
-        volumeCredits += Math.max(perf.audience - 30, 0);
-        //희극 관객 5명마다 추가 포인트를 제공한다.
-        if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
+        volumeCredits += volumeCreditsFor(perf);
         
         //청구 내역을 출력한다.
-        result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}석) \n`;
-        totalAmount += thisAmount;
+        result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}석) \n`;
+        totalAmount += amountFor(perf);
     }
     //청구 내역을 출력한다.
     result += `총액: ${format(totalAmount/100)}\n`;
@@ -72,6 +67,15 @@ function amountFor(aPerfomance) {
         default:
             throw new Error(`알수 없는 장르: ${playFor(perf).type}`);
     }
+    return result;
+}
+
+function volumeCreditsFor(aPerfomance) {
+    let result = 0;
+    //포인트를 적립한다.
+    result += Math.max(aPerfomance.audience - 30, 0);
+    //희극 관객 5명마다 추가 포인트를 제공한다.
+    if ("comedy" === playFor(aPerfomance).type) result += Math.floor(aPerfomance.audience / 5);
     return result;
 }
 
