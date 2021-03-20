@@ -26,6 +26,8 @@ function statement(invoice, plays) {
     const statementData = {};
     statementData.customer = invoice.customer;
     statementData.performances = invoice.performances.map(enrichPerfomance);
+    statementData.totalAmount = totalAmount(statementData); 
+    statementData.totalVolumeCredits = totalVolumeCredits(statementData); 
 
     return renderPlainText(statementData, plays);
 
@@ -33,6 +35,7 @@ function statement(invoice, plays) {
         const result = Object.assign({}, aPerfomance);  //얕은 복사 수행
         result.play = playFor(result);
         result.amount = amountFor(result);
+        result.volumeCredits = volumeCreditsFor(result);
         return result;
     }
 
@@ -62,6 +65,32 @@ function statement(invoice, plays) {
         }
         return result;
     }
+
+    function volumeCreditsFor(aPerfomance) {
+        let result = 0;
+        //포인트를 적립한다.
+        result += Math.max(aPerfomance.audience - 30, 0);
+        //희극 관객 5명마다 추가 포인트를 제공한다.
+        if ("comedy" === aPerfomance.play.type) result += Math.floor(aPerfomance.audience / 5);
+        return result;
+    }
+
+    function totalAmount(data) {
+        let result = 0;
+        for(let perf of data.performances) {
+            result += perf.amount;
+        }
+
+        return result;
+    }
+
+    function totalVolumeCredits(data) {
+        let result = 0;
+        for(let perf of data.performances) {
+            result += perf.volumeCredits;
+        }
+        return result;
+    }
 }
 
 function renderPlainText(data, plays) {
@@ -73,40 +102,14 @@ function renderPlainText(data, plays) {
     }
 
     //청구 내역을 출력한다.
-    result += `총액: ${usd(totalAmount())}\n`;
-    result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+    result += `총액: ${usd(data.totalAmount)}\n`;
+    result += `적립 포인트: ${data.volumeCredits}점\n`;
     return result;
-
-    function totalAmount() {
-        let result = 0;
-        for(let perf of data.performances) {
-            result += perf.amount;
-        }
-
-        return result;
-    }
-
-    function totalVolumeCredits() {
-        let result = 0;
-        for(let perf of data.performances) {
-            result += volumeCreditsFor(perf);
-        }
-        return result;
-    }
 
     function usd(aNumber) {
         return new Intl.NumberFormat("en-US", {
             style: "currency", currency: "USD", minimumFractionDigits: 2 
         }).format(aNumber/100);
-    }
-
-    function volumeCreditsFor(aPerfomance) {
-        let result = 0;
-        //포인트를 적립한다.
-        result += Math.max(aPerfomance.audience - 30, 0);
-        //희극 관객 5명마다 추가 포인트를 제공한다.
-        if ("comedy" === aPerfomance.play.type) result += Math.floor(aPerfomance.audience / 5);
-        return result;
     }
 
 }
