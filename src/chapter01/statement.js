@@ -3,6 +3,7 @@ export { statement };
 function statement(invoice, plays) {
   let statementData = {};
   statementData.customer = invoice.customer;
+  statementData.performances = invoice.performances;
 
   return renderPlainText(statementData, invoice, plays);
 }
@@ -10,7 +11,7 @@ function statement(invoice, plays) {
 function renderPlainText(data, invoice, plays) {
   let result = `Statement for ${data.customer}\n`;
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     // 청구 내역을 출력한다.
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
@@ -61,7 +62,7 @@ function renderPlainText(data, invoice, plays) {
   function totalVolumeCredits() {
     let result = 0;
 
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       // 포인트를 적립한다.
       result += volumeCreditFor(perf);
     }
@@ -79,7 +80,7 @@ function renderPlainText(data, invoice, plays) {
   function totalAmount() {
     let result = 0;
 
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
