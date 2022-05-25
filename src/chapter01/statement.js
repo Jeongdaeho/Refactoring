@@ -1,4 +1,4 @@
-export { statement };
+export { statement, htmlStatement };
 import { createStatementData } from "./createStatementData";
 
 function usd(aNumber) {
@@ -29,7 +29,7 @@ function renderPlainText(data) {
 }
 
 function htmlStatement(invoice, plays) {
-  return renderPlainText(createStatementData(invoice, plays));
+  return renderHtml(createStatementData(invoice, plays));
 }
 
 function renderHtml(data) {
