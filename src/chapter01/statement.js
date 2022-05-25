@@ -3,9 +3,19 @@ export { statement };
 function statement(invoice, plays) {
   let statementData = {};
   statementData.customer = invoice.customer;
-  statementData.performances = invoice.performances;
+  statementData.performances = invoice.performances.map(enrichPerformance);
 
   return renderPlainText(statementData, plays);
+
+  function enrichPerformance(aPerformance) {
+    const result = Object.assign({}, aPerformance); //얕은 복사
+    result.play = playFor(aPerformance);
+    return result;
+  }
+
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
+  }
 }
 
 function renderPlainText(data, plays) {
