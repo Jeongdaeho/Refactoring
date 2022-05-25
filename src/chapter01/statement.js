@@ -38,6 +38,16 @@ function statement(invoice, plays) {
     return result;
   }
 
+  function totalVolumeCredits() {
+    let result = 0;
+
+    for (let perf of invoice.performances) {
+      // 포인트를 적립한다.
+      result += volumeCreditFor(perf);
+    }
+    return result;
+  }
+
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -57,13 +67,7 @@ function statement(invoice, plays) {
     totalAmount += amountFor(perf);
   }
 
-  let volumeCredits = 0;
-
-  for (let perf of invoice.performances) {
-    // 포인트를 적립한다.
-    volumeCredits += volumeCreditFor(perf);
-  }
   result += `Amount owed is ${usd(totalAmount)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 }
