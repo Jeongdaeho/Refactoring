@@ -11,7 +11,6 @@ function statement(invoice, plays) {
     const result = Object.assign({}, aPerformance); //얕은 복사
     result.play = playFor(result);
     result.amount = amountFor(result);
-    result.volumeCredits = volumeCreditFor(result);
     return result;
   }
 
@@ -42,15 +41,6 @@ function statement(invoice, plays) {
 
     return result;
   }
-
-  function volumeCreditFor(aPerformance) {
-    let result = 0;
-    result += Math.max(aPerformance.audience - 30, 0);
-
-    if ("comedy" === aPerformance.play.type)
-      result += Math.floor(aPerformance.audience / 5);
-    return result;
-  }
 }
 
 function renderPlainText(data) {
@@ -67,12 +57,21 @@ function renderPlainText(data) {
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 
+  function volumeCreditFor(aPerformance) {
+    let result = 0;
+    result += Math.max(aPerformance.audience - 30, 0);
+
+    if ("comedy" === aPerformance.play.type)
+      result += Math.floor(aPerformance.audience / 5);
+    return result;
+  }
+
   function totalVolumeCredits() {
     let result = 0;
 
     for (let perf of data.performances) {
       // 포인트를 적립한다.
-      result += perf.volumeCredits;
+      result += volumeCreditFor(perf);
     }
     return result;
   }
