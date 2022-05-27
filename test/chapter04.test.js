@@ -15,8 +15,16 @@ function sampleProvinceData() {
 }
 
 describe("statement", () => {
+  let asia;
+  beforeEach(() => {
+    asia = new Province(sampleProvinceData());
+  });
+
   it("shortfall", () => {
-    const asia = new Province(sampleProvinceData());
     assert.equal(asia.shortfall, 5);
+  });
+
+  it("profit", () => {
+    assert.equal(asia.profit, 230);
   });
 });
