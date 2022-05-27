@@ -1,7 +1,7 @@
-import { expect } from "chai";
 import { statement, htmlStatement } from "../src/chapter01/statement.js";
 import invoices from "../src/chapter01/invoices.json";
 import plays from "../src/chapter01/plays.json";
+import assert from "assert";
 
 describe("statement", () => {
   it("should print a statement", () => {
@@ -14,7 +14,7 @@ describe("statement", () => {
       "You earned 47 credits\n";
 
     let result = statement(invoices[0], plays);
-    expect(result).to.equal(expected);
+    assert.equal(result, expected);
   });
 
   it("should print a statement for multiple plays, single customer and multiple seats in html", () => {
@@ -28,7 +28,6 @@ describe("statement", () => {
     expected += `<p>You earned <em>47</em> credits</p>\n`;
 
     let result = htmlStatement(invoices[0], plays);
-    console.log(result);
-    expect(result).to.equal(expected);
+    assert.equal(result, expected);
   });
 });
