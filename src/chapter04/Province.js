@@ -24,7 +24,7 @@ export class Province {
     return this._totalProduction;
   }
   set totalProduction(arg) {
-    this._producers = arg;
+    this._totalProduction = arg;
   }
   get demand() {
     return this._demand;
