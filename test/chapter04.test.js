@@ -1,6 +1,6 @@
 import assert from "assert";
-import { expect } from 'chai';
-import { Province } from '../src/chapter04/Province.js';
+import { expect } from "chai";
+import { Province } from "../src/chapter04/Province.js";
 
 function sampleProvinceData() {
   return {
@@ -33,5 +33,52 @@ describe("statement", () => {
     asia.producers[0].production = 20;
     expect(asia.shortfall).equal(-6);
     expect(asia.profit).equal(292);
+  });
+});
+
+describe("no producers", function () {
+  let noProducers;
+  this.beforeEach(function () {
+    const data = {
+      name: "No producers",
+      producers: [],
+      demand: 30,
+      price: 20,
+    };
+    noProducers = new Province(data);
+  });
+
+  it("shortfall", function () {
+    expect(noProducers.shortfall).equal(30);
+  });
+
+  it("profit", function () {
+    expect(noProducers.profit).equal(0);
+  });
+});
+
+describe("zero demand", function () {
+  let asia;
+  beforeEach(() => {
+    asia = new Province(sampleProvinceData());
+  });
+
+  it("zero demand", function () {
+    asia.demand = 0;
+    expect(asia.shortfall).equal(-25);
+    expect(asia.profit).equal(0);
+  });
+});
+
+describe("negative demand", function () {
+  let asia;
+  beforeEach(() => {
+    asia = new Province(sampleProvinceData());
+  });
+
+  it("zero demand", function () {
+    asia.demand = -1;
+    expect(asia.shortfall).equal(-26);
+    expect(asia.profit).equal(-10);
   });
 });
