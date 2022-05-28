@@ -12,17 +12,17 @@ export function printOwing(invoice, console, clock) {
 	const today = clock.today;
 	invoice.dueDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30);
 
-	printDetail();
+	printDetail(invoice, outstanding);
+}
 
-	function printDetail() {
-		console.log(`name: ${invoice.customer}`);
-		console.log(`amount: ${outstanding}`);
-		console.log(`due: ${invoice.dueDate.toLocaleDateString()}`);
-	}
-	
-	function printBanner() {
-		console.log("***********************");
-		console.log("****** 고객 채무 ******");
-		console.log("***********************");
-	}
+function printBanner() {
+	console.log("***********************");
+	console.log("****** 고객 채무 ******");
+	console.log("***********************");
+}
+
+function printDetail(invoice, outstanding) {
+	console.log(`name: ${invoice.customer}`);
+	console.log(`amount: ${outstanding}`);
+	console.log(`due: ${invoice.dueDate.toLocaleDateString()}`);
 }
