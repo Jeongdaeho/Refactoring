@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { getRating } from "../src/chapter06/rating.js";
 import { price } from "../src/chapter06/extractVariable";
 import { Order } from "../src/chapter06/extractVariable2";
-import {inNewEngland} from "../src/chapter06/changeFunctionDeclaration";
+import {xxNewEngland} from "../src/chapter06/changeFunctionDeclaration";
 
 describe("chp6-2", function () {
   it("chp6-2", function () {
@@ -55,7 +55,7 @@ describe("chp6-3", function () {
       } 
     }
     const someCustomers = [aEnglander, noEnglander];
-    const newEnglanders = someCustomers.filter(c => inNewEngland(c));
+    const newEnglanders = someCustomers.filter(c => xxNewEngland(c.address.state));
 
     expect(newEnglanders).to.eql([aEnglander]);
   });

@@ -1,4 +1,4 @@
-export {inNewEngland};
+export {inNewEngland, xxNewEngland};
 
 function inNewEngland(aCustomer) {
 	const stateCode = aCustomer.address.state;
