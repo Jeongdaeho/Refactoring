@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { getRating } from "../src/chapter06/rating.js";
 import { price } from "../src/chapter06/extractVariable";
 import { Order } from "../src/chapter06/extractVariable2";
+import {inNewEngland} from "../src/chapter06/changeFunctionDeclaration";
 
 describe("chp6-2", function () {
   it("chp6-2", function () {
@@ -39,5 +40,23 @@ describe("chp6-3", function () {
     };
 
     expect(new Order(anOrder).price).to.equal(56.1);
+  });
+
+  it('잉글랜드 거주확인', () => {
+
+    const aEnglander = {
+      address: {
+          state: "CT"
+      }
+    };
+    const noEnglander = {
+      address: {
+        state: "ZZ"
+      } 
+    }
+    const someCustomers = [aEnglander, noEnglander];
+    const newEnglanders = someCustomers.filter(c => inNewEngland(c));
+
+    expect(newEnglanders).to.eql([aEnglander]);
   });
 });
